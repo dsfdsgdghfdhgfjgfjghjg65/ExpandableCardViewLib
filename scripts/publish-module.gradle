@@ -1,5 +1,5 @@
 apply plugin: 'maven-publish'
-apply plugin: 'signing'
+//apply plugin: 'signing'
 
 task androidSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
@@ -80,16 +80,16 @@ afterEvaluate {
     }
 }
 
-signing {
-//    println("rootProject.ext[\"signing.keyId\"]=" + rootProject.ext["signing.keyId"])
-//    println("rootProject.ext[\"signing.secretKeyRingFile\"]=" + rootProject.ext["signing.secretKeyRingFile"])
-//    println("rootProject.ext[\"signing.password\"]=" + rootProject.ext["signing.password"])
-//    useInMemoryPgpKeys(
-//            rootProject.ext["signing.keyId"],
-//    //            rootProject.ext["signing.key"],
-//            rootProject.ext["signing.secretKeyRingFile"],
-//            rootProject.ext["signing.password"],
-//    )
-    sign publishing.publications
-//    sign configurations.archives
-}
+//signing {
+////    println("rootProject.ext[\"signing.keyId\"]=" + rootProject.ext["signing.keyId"])
+////    println("rootProject.ext[\"signing.secretKeyRingFile\"]=" + rootProject.ext["signing.secretKeyRingFile"])
+////    println("rootProject.ext[\"signing.password\"]=" + rootProject.ext["signing.password"])
+////    useInMemoryPgpKeys(
+////            rootProject.ext["signing.keyId"],
+////    //            rootProject.ext["signing.key"],
+////            rootProject.ext["signing.secretKeyRingFile"],
+////            rootProject.ext["signing.password"],
+////    )
+//    sign publishing.publications
+////    sign configurations.archives
+//}
