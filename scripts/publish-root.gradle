@@ -1,0 +1,113 @@
+//apply plugin: 'maven-publish'
+
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+ext["sonatypeStagingProfileId"] = ''
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.key"] = ''
+ext["signing.secretKeyRingFile"] = ''
+ext["snapshot"] = ''
+
+//File secretPropsFile = project.rootProject.file('local.properties')
+//if (secretPropsFile.exists()) {
+//    // Read local.properties file first if it exists
+//    Properties p = new Properties()
+//    new FileInputStream(secretPropsFile).withCloseable { is -> p.load(is) }
+//    p.each { name, value -> ext[name] = value }
+//} else {
+//    // Use system environment variables
+////    ext["ossrhUsername"] = System.getenv('OSSRH_USERNAME')
+////    ext["ossrhPassword"] = System.getenv('OSSRH_PASSWORD')
+//    ext["ossrhUsername"] = System.getenv('ossrhUsername')
+//    ext["ossrhPassword"] = System.getenv('ossrhPassword')
+////    ext["sonatypeStagingProfileId"] = System.getenv('SONATYPE_STAGING_PROFILE_ID')
+//    ext["sonatypeStagingProfileId"] = System.getenv('sonatypeStagingProfileId')
+////    ext["signing.keyId"] = System.getenv('SIGNING_KEY_ID')
+////    ext["signing.password"] = System.getenv('SIGNING_PASSWORD')
+////    ext["signing.key"] = System.getenv('SIGNING_KEY')
+//    ext["signing.keyId"] = System.getenv('signing.keyId')
+//    ext["signing.password"] = System.getenv('signing.password')
+//    ext["signing.secretKeyRingFile"] = System.getenv('signing.secretKeyRingFile')
+//    ext["snapshot"] = System.getenv('SNAPSHOT')
+//}
+
+
+//    // Use system environment variables
+////    ext["ossrhUsername"] = System.getenv('OSSRH_USERNAME')
+////    ext["ossrhPassword"] = System.getenv('OSSRH_PASSWORD')
+//    ext["ossrhUsername"] = System.getenv('ossrhUsername')
+//    ext["ossrhPassword"] = System.getenv('ossrhPassword')
+////    ext["sonatypeStagingProfileId"] = System.getenv('SONATYPE_STAGING_PROFILE_ID')
+//    ext["sonatypeStagingProfileId"] = System.getenv('sonatypeStagingProfileId')
+////    ext["signing.keyId"] = System.getenv('SIGNING_KEY_ID')
+////    ext["signing.password"] = System.getenv('SIGNING_PASSWORD')
+////    ext["signing.key"] = System.getenv('SIGNING_KEY')
+//    ext["signing.keyId"] = System.getenv('signing.keyId')
+//    ext["signing.password"] = System.getenv('signing.password')
+//    ext["signing.secretKeyRingFile"] = System.getenv('signing.secretKeyRingFile')
+//    ext["snapshot"] = System.getenv('SNAPSHOT')
+
+def loadProperties() {
+//    Properties properties = new Properties()
+////    String filePath = rootDir.getAbsoluteFile()
+//    String filePath = "/Users/banana/.gradle"
+//    String fileName = "gradle.properties"
+//    File propertyFile = new File(filePath, fileName)
+//    properties.load(propertyFile.newDataInputStream())
+////    properties["mBaseVersionCode"] = "9999"//向mBaseVersionCode的属性写入值9999
+////    properties.store(propertyFile.newDataOutputStream(), 'Some comment')
+//    properties.each { name, value -> {
+////            println("name=" + name)
+////            println("value=" + value)
+//            ext[name] = value
+//        }
+//    }
+
+    Properties properties = new Properties()
+//    def propsFile = rootProject.file('key.properties')
+
+//    $HOME
+    println("rootDir=" + rootDir)
+//    String filePath = "../../../../Maven/key"
+    String filePath = rootDir.getParentFile().getParentFile().getParentFile().getAbsolutePath() + "/Maven/key"
+    String fileName = "key.properties"
+    File propsFile = new File(filePath, fileName)
+    println("propsFile=" + propsFile.getAbsolutePath())
+    if (propsFile.exists()) {
+        new FileInputStream(propsFile).withCloseable { is -> properties.load(is) }
+        properties.each { name, value -> ext[name] = value }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            loadProperties()
+//            stagingProfileId = System.getenv('sonatypeStagingProfileId')
+//            username = System.getenv('ossrhUsername')
+//            password = System.getenv('ossrhPassword')
+            stagingProfileId = sonatypeStagingProfileId
+            username = ossrhUsername
+            password = ossrhPassword
+//            println("sonatypeStagingProfileId=" + sonatypeStagingProfileId)
+//            println("username=" + ossrhUsername)
+//            println("password=" + ossrhPassword)
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+//            nexusUrl.set(uri("https://s01.oss.sonatype.org/"))
+//            nexusUrl.set(uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
+}
+//publishing {
+//    repositories {
+//        maven {
+//            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2"
+//            credentials {
+//                username = ossrhUsername
+//                password = ossrhPassword
+//            }
+//        }
+//    }
+//}
