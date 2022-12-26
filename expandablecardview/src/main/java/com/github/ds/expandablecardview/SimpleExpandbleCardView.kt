@@ -8,6 +8,7 @@ import android.view.animation.RotateAnimation
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import kotlinx.android.synthetic.main.simple_cardview_footer.view.*
 import kotlinx.android.synthetic.main.simple_cardview_header.view.*
 
 class SimpleExpandableCardView @JvmOverloads constructor(
@@ -34,6 +35,7 @@ class SimpleExpandableCardView @JvmOverloads constructor(
         iconDrawable = drawable ?: ContextCompat.getDrawable(context, R.drawable.ic_expand_more)
 
         headerViewRes = R.layout.simple_cardview_header
+        footerViewRes = R.layout.simple_cardview_footer
         typedArray.recycle()
         initAnimation()
     }
@@ -65,17 +67,25 @@ class SimpleExpandableCardView @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        header_textview.text = title
-        ViewCompat.setBackground(header_expand_icon, iconDrawable)
+//        header_textview.text = title
+//        ViewCompat.setBackground(header_expand_icon, iconDrawable)
+        header_textview?.text = title
+        footer_textview?.text = title
+        header_expand_icon?.let { ViewCompat.setBackground(it, iconDrawable) }
+        footer_expand_icon?.let { ViewCompat.setBackground(it, iconDrawable) }
     }
 
 
     override fun beforeExpandStart() {
-        header_expand_icon.startAnimation(defaultAnimationOnExpanding)
+//        header_expand_icon.startAnimation(defaultAnimationOnExpanding)
+        header_expand_icon?.let { it.startAnimation(defaultAnimationOnExpanding) }
+        footer_expand_icon?.let { it.startAnimation(defaultAnimationOnExpanding) }
     }
 
     override fun beforeCollapseStart() {
-        header_expand_icon.startAnimation(defaultAnimationOnCollapsing)
+//        header_expand_icon.startAnimation(defaultAnimationOnCollapsing)
+        header_expand_icon?.let { it.startAnimation(defaultAnimationOnCollapsing) }
+        footer_expand_icon?.let { it.startAnimation(defaultAnimationOnCollapsing) }
     }
 
     fun setIcon(@DrawableRes drawableRes: Int) {

@@ -23,12 +23,16 @@ open class ExpandableCardView @JvmOverloads constructor(
 
     private lateinit var headerView: View
     private lateinit var contentView: View
+    private lateinit var footerView: View
 
     @LayoutRes
     protected var headerViewRes: Int = 0
 
     @LayoutRes
     private var contentViewRes: Int = 0
+
+    @LayoutRes
+    protected var footerViewRes: Int = 0
 
     private var slideAnimator: ValueAnimator? = null
 
@@ -50,10 +54,9 @@ open class ExpandableCardView @JvmOverloads constructor(
     init {
         LayoutInflater.from(context).inflate(R.layout.expandable_cardview, this)
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ExpandableCardView)
-        headerViewRes =
-            typedArray.getResourceId(R.styleable.ExpandableCardView_header_view, View.NO_ID)
-        contentViewRes =
-            typedArray.getResourceId(R.styleable.ExpandableCardView_content_view, View.NO_ID)
+        headerViewRes = typedArray.getResourceId(R.styleable.ExpandableCardView_header_view, View.NO_ID)
+        contentViewRes = typedArray.getResourceId(R.styleable.ExpandableCardView_content_view, View.NO_ID)
+        footerViewRes = typedArray.getResourceId(R.styleable.ExpandableCardView_footer_view, View.NO_ID)
         isExpanded = typedArray.getBoolean(R.styleable.ExpandableCardView_expanded, false)
         val defaultDuration = context.resources.getInteger(R.integer.duration)
         animDuration = typedArray.getInteger(
@@ -65,11 +68,22 @@ open class ExpandableCardView @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        card_header.layoutResource = headerViewRes
-        headerView = card_header.inflate()
+//        card_header.layoutResource = headerViewRes
+//        headerView = card_header.inflate()
+        if (headerViewRes != View.NO_ID) {
+            card_header.layoutResource = headerViewRes
+            headerView = card_header.inflate()
+        }
 
         card_content.layoutResource = contentViewRes
         contentView = card_content.inflate()
+
+//        card_footer.layoutResource = footerViewRes
+//        footerView = card_footer.inflate()
+        if (footerViewRes != View.NO_ID) {
+            card_footer.layoutResource = footerViewRes
+            footerView = card_footer.inflate()
+        }
 
         initClickListeners()
     }
