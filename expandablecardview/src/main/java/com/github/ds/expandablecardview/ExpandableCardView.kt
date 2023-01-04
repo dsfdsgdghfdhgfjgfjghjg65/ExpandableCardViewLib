@@ -43,10 +43,15 @@ open class ExpandableCardView @JvmOverloads constructor(
     protected var animDuration: Long
 
     private val defaultClickListener = OnClickListener {
-        if (isExpanded)
-            collapse()
-        else
-            expand()
+//        if (isExpanded)
+//            collapse()
+//        else
+//            expand()
+        toggle()
+    }
+
+    fun toggle(timeAnim: Long = animDuration) {
+        if (isExpanded) collapse(timeAnim) else expand(timeAnim)
     }
 
     private var listener: OnExpandChangeListener? = null
